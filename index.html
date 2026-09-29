@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f3eb">
+  <meta name="description" content="和一只鹈鹕一起，把日子骑慢一点。可交互的 3D 海岸骑行体验。">
+  <title>慢慢骑，去看海。— Pelican Cycling Club</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/"}}</script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="鹈鹕骑行俱乐部首页">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M12 30c-7-12 0-23 10-21 5 1 7 5 6 9l14 4-17 3c0 12-11 14-15 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="16" r="1.5" fill="currentColor"/><path d="m16 36-3 6m10-7 2 7M7 42h12m3 0h9" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <span>PELICAN<span class="brand-sub">CYCLING CLUB · 鹈鹕骑行俱乐部</span></span>
+    </a>
+    <div class="header-note"><span class="status-dot"></span> 不赶路，感受路。</div>
+    <button id="sound" class="icon-button" aria-label="开启海风声音" aria-pressed="false" title="海风声音">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="sound-wave" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-mute" d="m16 9 5 6m0-6-5 6"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="headline">
+      <div class="eyebrow"><span class="tiny-line"></span> A LITTLE RIDE, A LITTLE JOY</div>
+      <h1 id="headline">慢慢骑，<br>去看<span class="sea-word">海<span class="swoosh"></span></span>。</h1>
+      <p class="intro-copy">今天的目的地，是好心情。<br>跟着鹈鹕先生，让海风带个路。</p>
+      <button id="ride" class="ride-button" aria-pressed="true"><span id="ride-label">歇一会儿</span><span id="ride-symbol" aria-hidden="true">Ⅱ</span></button>
+      <div class="trip-note"><span class="tiny-bike" aria-hidden="true">◎—◎</span> 没有终点，只有沿途。</div>
+    </section>
+
+    <section id="stage" class="stage" aria-label="鹈鹕骑自行车的三维海岛场景">
+      <div class="scene-halo" aria-hidden="true"></div>
+      <div class="background-word" aria-hidden="true">COASTING</div>
+      <canvas id="world" tabindex="0" aria-label="交互三维场景。拖动旋转，滚轮或双指缩放。空格暂停，B 响铃，R 重置视角。"></canvas>
+      <div class="scene-tag"><span class="status-dot"></span><span id="scene-label">海风正好 · SUNNY COAST</span></div>
+      <div class="coordinate" aria-hidden="true">24° N / 120° E<br>IMAGINARY COASTLINE</div>
+      <div class="scene-tools">
+        <button id="bell" class="icon-button" aria-label="按响车铃" title="车铃 · B"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16h16M6 16v-4a6 6 0 0 1 12 0v4M9 20h6M12 3v3m6-2 2 2"/></svg></button>
+        <button id="camera" class="icon-button" aria-label="拍照保存" title="保存照片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h5l2-3h4l2 3h5v13H3Z"/><circle cx="12" cy="13" r="4"/></svg></button>
+        <button id="reset" class="icon-button" aria-label="重置视角" title="重置视角 · R"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></svg></button>
+      </div>
+      <div class="interaction-hint"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m3 7 3-3 3 3M6 4v10m11-1-3 3-3-3m3 3V6"/></svg> 拖动转一转 <span>·</span> 滚动靠近一点</div>
+      <div id="loading" class="loading" role="status"><span class="loading-wheel"></span><span>鹈鹕先生正在出发…</span></div>
+      <div id="fallback" class="fallback" hidden><strong>这片海需要 3D 支持</strong><p>请开启浏览器硬件加速，或使用支持 WebGL 2 的浏览器。</p><button onclick="location.reload()">重新加载</button></div>
+    </section>
+
+    <section class="dashboard" aria-label="骑行控制台">
+      <div class="dash-section scenery">
+        <div class="control-heading">沿途风景 <span>THE MOOD</span></div>
+        <div class="segmented" role="group" aria-label="场景光照">
+          <button class="mood active" data-mood="day" aria-pressed="true"><span aria-hidden="true">☀</span> 晴日</button>
+          <button class="mood" data-mood="sunset" aria-pressed="false"><span aria-hidden="true">◒</span> 日落</button>
+          <button class="mood" data-mood="night" aria-pressed="false"><span aria-hidden="true">☾</span> 月夜</button>
+        </div>
+      </div>
+      <div class="dash-section pace">
+        <label class="control-heading" for="speed">骑行节奏 <span>YOUR PACE</span></label>
+        <div class="speed-row"><span>慢悠悠</span><input id="speed" type="range" min="0.35" max="2" step="0.05" value="1" aria-label="骑行速度"><span>追着风</span><output id="speed-value" for="speed">1.0×</output></div>
+      </div>
+      <div class="dash-section distance"><div><div class="control-heading">快乐里程 <span>JUST FOR FUN</span></div><div class="distance-number"><span id="distance">0.00</span><span class="unit">km</span><span class="distance-flower" aria-hidden="true">✳</span></div></div></div>
+    </section>
+  </main>
+
+  <footer><span>一只鹈鹕，一辆单车，一整个好天气。</span><span>MADE FOR THE JOY OF GOING NOWHERE <span class="footer-star">✳</span></span></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="flash" class="flash" aria-hidden="true"></div>
+  <noscript><div class="noscript">请启用 JavaScript，和鹈鹕先生一起出发。</div></noscript>
+  <script>window.addEventListener('error',function(e){if(!document.documentElement.dataset.sceneReady){document.getElementById('loading').hidden=true;document.getElementById('fallback').hidden=false;}},true);</script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
